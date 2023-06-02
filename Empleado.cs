@@ -12,6 +12,8 @@ namespace EspacioEmpleado
         private double sueldoBasico;
         private cargos cargo;
 
+      
+
 
 
         //get and set
@@ -26,19 +28,15 @@ namespace EspacioEmpleado
 
 
 
-
-
-
-
         public int aniosParaJubilarse()
         {
             int edad = calcularEdad();
 
-            if (genero == "mujer" && edad <= 60)
+            if (genero == "femenino" && edad <= 60)
             {
                 return (60 - edad);
             }
-            if (genero == "hombre" && edad <= 65)
+            if (genero == "masculino" && edad <= 65)
             {
                 return (65 - edad);
             }
@@ -51,11 +49,11 @@ namespace EspacioEmpleado
             int anioActual = DateTime.Now.Year;
             int mesActual = DateTime.Now.Month;
             int diaActual = DateTime.Now.Day;
-            DateTime hoy = new DateTime(anioActual,mesActual,diaActual);
+            DateTime hoy = new DateTime(anioActual, mesActual, diaActual);
             TimeSpan dif = hoy - fechaDeNacimiento;
             int diasTotales = dif.Days;
 
-            return diasTotales/365;
+            return (diasTotales / 365);
         }
         public int calcularAntiguedad()
         {
@@ -64,11 +62,43 @@ namespace EspacioEmpleado
 
         }
 
+        private double calcularAdicional()
+        {
 
+            int antiguedad = calcularAntiguedad();
+            double adicional = 0;
+
+            if (antiguedad >= 20)
+            {
+                adicional = ((sueldoBasico * 25) / 100) * antiguedad;
+            }
+            else
+            {
+                adicional = (sueldoBasico / 100) * antiguedad;
+
+            }
+            if (cargo == cargos.Ingeniero || cargo == cargos.Especialista)
+            {
+                adicional += adicional * 0.50;
+            }
+
+            if (estadoCivil == "casado")
+            {
+                adicional += 15000;
+            }
+
+            return adicional;
+        }
+        public double calcularSalario()
+        {
+            return (sueldoBasico + calcularAdicional());
+        }
+
+    
 
     }
 
-    enum cargos
+    public enum cargos
     {
         Auxiliar,
         Administrativo,
@@ -79,3 +109,20 @@ namespace EspacioEmpleado
     }
 
 }
+
+/*
+ saco el 1% del sueldo basico y lo multiplico por cada año de antiguedad hasta los 20 años
+ despues de los 20 años:
+ 25% del sueldo basico * antiguedad.
+
+ si es ingeniero o especialista 
+ adicional + 50 %. 
+ si es casado :
+ adicional + 15.000
+
+*/
+
+/*
+(numero * porcentaje) /100
+
+*/
