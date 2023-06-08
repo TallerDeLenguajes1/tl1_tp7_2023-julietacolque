@@ -88,46 +88,61 @@ internal class Program
         empleado3.Cargo = cargos.Auxiliar;
 
 
-        Empleado[] empleados = {empleado1, empleado2, empleado3};
-       
+        // Empleado[] empleados = { empleado1, empleado2, empleado3 };
+        var ListaEmpleados = new List<Empleado>();
 
-        double totalSalarios = MontoTotal(empleados);
+        ListaEmpleados.Add(empleado1);
+        ListaEmpleados.Add(empleado2);
+        ListaEmpleados.Add(empleado3);
+
+
+        double totalSalarios = MontoTotal(ListaEmpleados);
         Console.WriteLine("El monto total en salarios es: $ " + totalSalarios);
-        int indice = ProximoAJubilarse(empleados);
-        Console.WriteLine(indice);
+
+
         Console.WriteLine("EMPLEADO PROXIMO A JUBILARSE");
-        MostrarEmpleado(empleados,indice);
-// 
+        Empleado proximoAJubilarse = ProximoAJubilarse(ListaEmpleados);
+        MostrarEmpleado(proximoAJubilarse);
+
+        Console.WriteLine("LISTA EMPLEADOS");
+        foreach (var empleado in ListaEmpleados)
+        {
+            MostrarEmpleado(empleado);
+        }
+
 
     }
 
-    public static double MontoTotal(Empleado[] empleados)
+    public static double MontoTotal(List<Empleado> ListaEmpleados)
     {
         double monto = 0;
-        for (int i = 0; i < empleados.Length; i++)
+
+        foreach (var empleado in ListaEmpleados)
         {
-            monto = empleados[i].calcularSalario() +  monto;
+            monto = empleado.calcularSalario() + monto;
         }
         return monto;
     }
-    public static int ProximoAJubilarse(Empleado[] empleados)
+    public static Empleado ProximoAJubilarse(List<Empleado> ListaEmpleados)
     {
-        int minimo = 100, indice=0;
-        for (int i = 0; i < empleados.Length; i++)
+        Empleado empleadoAux = null;
+        int minimo = 100;
+        for (int i = 0; i < ListaEmpleados.Count; i++)
         {
-            if (empleados[i].aniosParaJubilarse() < minimo)
+            if (ListaEmpleados[i].aniosParaJubilarse() < minimo)
             {
-                minimo = empleados[i].aniosParaJubilarse();
-                indice = i;
-                
+
+                minimo = ListaEmpleados[i].aniosParaJubilarse();
+                empleadoAux = ListaEmpleados[i];
+
             }
         }
-        return indice;
+        return empleadoAux;
     }
 
-    public static void MostrarEmpleado(Empleado[] empleados, int indice)
+    public static void MostrarEmpleado(Empleado empleado)
     {
-        string datosEmpleado =$"Nombre:{empleados[indice].Nombre}\nApellido:{empleados[indice].Apellido}\nFecha de Nacimiento: {empleados[indice].FechaDeNacimiento}\nEstado Civil:{empleados[indice].EstadoCivil}\nGenero: {empleados[indice].Genero}\nIngreso: {empleados[indice].FechaIngreso}\nSueldo Basico: {empleados[indice].SueldoBasico}\nCargo: {empleados[indice].Cargo}\nLa antiguedad del empleado es: {empleados[indice].calcularAntiguedad()}\nEdad: {empleados[indice].calcularEdad()}\nAnios que le faltan para jubilarse:{empleados[indice].aniosParaJubilarse()}\n";
+        string datosEmpleado = $"Nombre:{empleado.Nombre}\nApellido:{empleado.Apellido}\nFecha de Nacimiento: {empleado.FechaDeNacimiento}\nEstado Civil:{empleado.EstadoCivil}\nGenero: {empleado.Genero}\nIngreso: {empleado.FechaIngreso}\nSueldo Basico: {empleado.SueldoBasico}\nCargo: {empleado.Cargo}\nLa antiguedad del empleado es: {empleado.calcularAntiguedad()}\nEdad: {empleado.calcularEdad()}\nAnios que le faltan para jubilarse:{empleado.aniosParaJubilarse()}\n";
 
         Console.WriteLine(datosEmpleado);
 
